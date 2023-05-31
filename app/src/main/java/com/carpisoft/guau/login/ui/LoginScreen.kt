@@ -1,6 +1,7 @@
 package com.carpisoft.guau.login.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -8,11 +9,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -25,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.carpisoft.guau.R
+import com.carpisoft.guau.commons.ui.buttons.GeneralButton
 import com.carpisoft.guau.commons.ui.textfields.SimpleTextField
 import com.carpisoft.guau.commons.ui.textfields.SimpleTextFieldPassword
 
@@ -32,24 +36,40 @@ import com.carpisoft.guau.commons.ui.textfields.SimpleTextFieldPassword
 fun LoginScreen(loginViewModel: LoginViewModel) {
     val email by loginViewModel.email.collectAsState()
     val password by loginViewModel.password.collectAsState()
-    PortraitScreen(
-        email = email,
-        password = password,
-        onEmailValueChange = {
-            loginViewModel.onLoginChange(email = it, password = password)
-        },
-        onPasswordValueChange = {
-            loginViewModel.onLoginChange(email = email, password = it)
+    val loginEnabled by loginViewModel.loginEnabled.collectAsState()
+    val isLoading by loginViewModel.isLoading.collectAsState()
+    if (isLoading) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp)
+        ) {
+            CircularProgressIndicator(Modifier.align(Alignment.Center))
         }
-    )
+    } else {
+        PortraitScreen(
+            email = email,
+            password = password,
+            enabled = loginEnabled,
+            onEmailValueChange = {
+                loginViewModel.onLoginChange(email = it, password = password)
+            },
+            onPasswordValueChange = {
+                loginViewModel.onLoginChange(email = email, password = it)
+            },
+            onClickSignIn = { loginViewModel.doLogin() }
+        )
+    }
 }
 
 @Composable
 fun PortraitScreen(
     email: String,
     password: String,
+    enabled: Boolean,
     onEmailValueChange: (String) -> Unit,
-    onPasswordValueChange: (String) -> Unit
+    onPasswordValueChange: (String) -> Unit,
+    onClickSignIn: () -> Unit
 ) {
     ConstraintLayout(
         modifier = Modifier
@@ -102,6 +122,15 @@ fun PortraitScreen(
                 label = stringResource(id = R.string.password),
                 onValueChange = onPasswordValueChange
             )
+
+            GeneralButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 8.dp, end = 8.dp, top = 16.dp),
+                label = "Sign in",
+                enabled = enabled,
+                onClick = onClickSignIn
+            )
         }
 
     }
@@ -113,6 +142,8 @@ private fun Preview() {
     PortraitScreen(
         email = "test@gmail.com",
         password = "hola",
+        enabled = true,
         onEmailValueChange = {},
-        onPasswordValueChange = {})
+        onPasswordValueChange = {},
+        onClickSignIn = {})
 }
