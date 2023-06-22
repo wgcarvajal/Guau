@@ -7,6 +7,6 @@ class ValidateEmailAndPasswordUseCase @Inject constructor(){
     operator fun invoke(email: String, password: String): Boolean {
         val mPattern =
             Patterns.EMAIL_ADDRESS
-        return email.isNotEmpty() && mPattern.matcher(email).matches() && password.length >= 3
+        return email.isNotEmpty() && mPattern.matcher(email).matches() && password.length >= 5
     }
 }

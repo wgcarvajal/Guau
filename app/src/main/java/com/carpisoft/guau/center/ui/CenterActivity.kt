@@ -1,23 +1,17 @@
-package com.carpisoft.guau
+package com.carpisoft.guau.center.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.carpisoft.guau.login.ui.LoginScreen
-import com.carpisoft.guau.login.ui.LoginViewModel
 import com.carpisoft.guau.ui.theme.GuauTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
-
-    private val loginViewModel: LoginViewModel by viewModels()
-
+class CenterActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -27,7 +21,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    LoginScreen(loginViewModel = loginViewModel)
+
                 }
             }
         }

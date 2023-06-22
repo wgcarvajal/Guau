@@ -1,4 +1,4 @@
-package com.carpisoft.guau.commons.ui.buttons
+package com.carpisoft.guau.commons.ui.screens.buttons
 
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text

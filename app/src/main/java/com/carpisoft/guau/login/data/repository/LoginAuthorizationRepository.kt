@@ -19,4 +19,16 @@ class LoginAuthorizationRepository @Inject constructor(private val preferences: 
     override suspend fun saveName(name: String) {
         preferences.saveString(key = LoginPreferencesConstants.NAME_KEY, value = name)
     }
+
+    override suspend fun getToken(): String {
+        return preferences.getString(LoginPreferencesConstants.TOKEN_KEY)
+    }
+
+    override suspend fun getEmail(): String {
+        return preferences.getString(LoginPreferencesConstants.EMAIL_KEY)
+    }
+
+    override suspend fun getName(): String {
+        return preferences.getString(LoginPreferencesConstants.NAME_KEY)
+    }
 }
